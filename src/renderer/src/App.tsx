@@ -2,10 +2,8 @@ import {
   AlertTriangle,
   Camera,
   CheckCircle2,
-  Chrome,
   Copy,
   Download,
-  FileSearch,
   FolderOpen,
   Globe2,
   Info,
@@ -28,7 +26,6 @@ import {
   type CaptureTarget,
   type CaptureResult,
   type ComplianceIssue,
-  type ExtensionManifestInfo,
   type ThemeState,
   type UrlScrollMode
 } from '../../shared/types';
@@ -39,14 +36,13 @@ import {
   localizedNote
 } from './i18n';
 
-type SourceMode = 'url' | 'extension' | 'browser';
+type SourceMode = 'url' | 'browser';
 type BusyState = 'idle' | 'capturing' | 'listing' | 'exporting';
 type AssetSelection = AssetPresetId | 'custom';
 
 const SOURCES: Array<{ id: SourceMode; icon: LucideIcon }> = [
   { id: 'browser', icon: MonitorDot },
-  { id: 'url', icon: Globe2 },
-  { id: 'extension', icon: Chrome }
+  { id: 'url', icon: Globe2 }
 ];
 
 const URL_SCROLL_MODES: UrlScrollMode[] = ['top', 'middle', 'bottom', 'custom'];
@@ -142,12 +138,9 @@ export default function App() {
   const [url, setUrl] = useState('https://example.com');
   const [urlScrollMode, setUrlScrollMode] = useState<UrlScrollMode>('top');
   const [urlScrollY, setUrlScrollY] = useState(0);
-  const [extensionPath, setExtensionPath] = useState('');
   const [endpoint, setEndpoint] = useState('http://127.0.0.1:9222');
   const [tabs, setTabs] = useState<BrowserTab[]>([]);
   const [selectedTabId, setSelectedTabId] = useState('');
-  const [extensionInfo, setExtensionInfo] = useState<ExtensionManifestInfo | undefined>();
-  const [extensionNotice, setExtensionNotice] = useState('');
   const [result, setResult] = useState<CaptureResult | undefined>();
   const [exportPath, setExportPath] = useState('');
   const [exportError, setExportError] = useState('');
@@ -173,8 +166,6 @@ export default function App() {
   const hasComplianceErrors = compliance.some((issue) => issue.severity === 'error');
   const canExport = Boolean(result?.imagePath) && !hasComplianceErrors;
   const selectedTab = useMemo(() => tabs.find((tab) => tab.id === selectedTabId), [tabs, selectedTabId]);
-  const hasOptionsPage = Boolean(extensionInfo?.optionsPath);
-  const hasPopupPage = Boolean(extensionInfo?.popupPath);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme.resolved;
@@ -211,47 +202,6 @@ export default function App() {
     setExportPath('');
     setExportError('');
   }, [assetId, assetSelection, customHeight, customWidth]);
-
-  useEffect(() => {
-    const trimmedPath = extensionPath.trim();
-    setExtensionInfo(undefined);
-    setExtensionNotice('');
-
-    if (!trimmedPath) {
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      void window.storeShot
-        .inspectExtensionManifest({ extensionPath: trimmedPath })
-        .then((info) => {
-          setExtensionInfo(info);
-
-          if (info.optionsPath || info.popupPath) {
-            const pages = [
-              info.optionsPath ? `${t.options}: ${info.optionsPath}` : t.optionsNotConfigured,
-              info.popupPath ? `${t.popup}: ${info.popupPath}` : t.popupNotConfigured
-            ];
-            setExtensionNotice(pages.join(' / '));
-          } else {
-            setExtensionNotice(t.manifestNoPages);
-          }
-        })
-        .catch(() => {
-          setExtensionNotice(t.waitingForValidExtension);
-        });
-    }, 350);
-
-    return () => window.clearTimeout(timer);
-  }, [
-    extensionPath,
-    t.manifestNoPages,
-    t.options,
-    t.optionsNotConfigured,
-    t.popup,
-    t.popupNotConfigured,
-    t.waitingForValidExtension
-  ]);
 
   async function run<T>(state: BusyState, task: () => Promise<T>): Promise<T | undefined> {
     setBusy(state);
@@ -316,29 +266,6 @@ export default function App() {
     );
   }
 
-  function captureExtension(kind: 'options' | 'popup') {
-    const target = targetForAction();
-    if (!target) {
-      return;
-    }
-
-    if (kind === 'options' && extensionInfo && !extensionInfo.optionsPath) {
-      setError(t.extensionNoOptions);
-      return;
-    }
-
-    if (kind === 'popup' && extensionInfo && !extensionInfo.popupPath) {
-      setError(t.extensionNoPopup);
-      return;
-    }
-
-    void captureWithResult(() =>
-      kind === 'options'
-        ? window.storeShot.captureExtensionOptions({ extensionPath, target })
-        : window.storeShot.captureExtensionPopup({ extensionPath, target })
-    );
-  }
-
   function captureBrowser() {
     const target = targetForAction();
     if (!target) {
@@ -351,13 +278,6 @@ export default function App() {
     }
 
     void captureWithResult(() => window.storeShot.captureBrowserTab({ endpoint, tabId: selectedTabId, target }));
-  }
-
-  async function pickExtensionDirectory() {
-    const directory = await window.storeShot.pickExtensionDirectory();
-    if (directory) {
-      setExtensionPath(directory);
-    }
   }
 
   async function refreshTabs() {
@@ -434,7 +354,7 @@ export default function App() {
     }
   }
 
-  const showNativeBrowserWarning = browserRuntimeMissing && (source === 'url' || source === 'extension');
+  const showNativeBrowserWarning = browserRuntimeMissing && source === 'url';
 
   return (
     <main className="app-shell">
@@ -546,45 +466,6 @@ export default function App() {
                     {busy === 'capturing' ? <Loader2 className="spin" size={18} /> : <Camera size={18} />}
                     {t.capturePage}
                   </button>
-                </div>
-              )}
-
-              {source === 'extension' && (
-                <div className="stack">
-                  <label>
-                    {t.unpackedExtensionDirectory}
-                    <div className="path-row">
-                      <input
-                        value={extensionPath}
-                        onChange={(event) => setExtensionPath(event.target.value)}
-                        placeholder="C:\\path\\to\\extension"
-                      />
-                      <button className="icon-button" onClick={pickExtensionDirectory} type="button" title={t.chooseDirectory}>
-                        <FolderOpen size={18} />
-                      </button>
-                    </div>
-                  </label>
-                  <div className="button-row">
-                    <button
-                      className="primary"
-                      onClick={() => captureExtension('options')}
-                      disabled={busy !== 'idle' || (Boolean(extensionInfo) && !hasOptionsPage)}
-                      type="button"
-                    >
-                      <FileSearch size={18} />
-                      {t.options}
-                    </button>
-                    <button
-                      className="secondary"
-                      onClick={() => captureExtension('popup')}
-                      disabled={busy !== 'idle' || (Boolean(extensionInfo) && !hasPopupPage)}
-                      type="button"
-                    >
-                      <Chrome size={18} />
-                      {t.popup}
-                    </button>
-                  </div>
-                  {extensionNotice && <p className="note">{extensionNotice}</p>}
                 </div>
               )}
 
@@ -706,11 +587,6 @@ export default function App() {
                 )}
               </div>
             </div>
-            {result?.detectedPath && (
-              <p className="note">
-                {t.detectedPage}: {result.detectedPath}
-              </p>
-            )}
             {result?.note && <p className="note">{localizedNote(language, result.note)}</p>}
             {result?.pagePosition && (
               <p className="note">

@@ -1,19 +1,18 @@
 # Web Extension Store Screenshot Tool
 
-面向 Web 扩展开发者的桌面截图工具。它可以按预设尺寸或自定义尺寸截取本机浏览器、在线网页、本地扩展页面，并导出 PNG 文件。
+面向 Web 扩展开发者的桌面截图工具。它可以按预设尺寸或自定义尺寸截取本机浏览器或在线网页，并导出 PNG 文件。
 
 ## 功能
 
 - 本机浏览器：通过 CDP 连接手动启动的 Chrome 或 Edge，并截取已经打开和调整好的页面。
 - 在线网页：输入 URL 后，使用本机 Chrome 或 Edge 打开页面并截图。
-- 本地扩展：选择未打包扩展目录，截取 options 页面或 popup 页面。
 - 素材尺寸：内置常用商店素材尺寸，并支持自定义宽高。
 - 导出：截图后选择保存位置，导出 PNG。
 - 便携版：可打包为 Windows portable EXE。
 
 ## 使用
 
-1. 在左侧选择截图来源：本机浏览器、在线网页或本地扩展。
+1. 在左侧选择截图来源：本机浏览器或在线网页。
 2. 在顶部选择素材尺寸；需要自由尺寸时选择自定义尺寸并输入宽高。
 3. 在截图设置中配置当前来源并执行截图。
 4. 在右侧预览结果。
@@ -64,7 +63,7 @@ npm test
 npm run dist:portable
 ```
 
-打包产物会输出到 `dist/`。便携版不内置 Playwright Chromium；在线网页和本地扩展截图会优先使用本机 Chrome，其次使用 Microsoft Edge。
+打包产物会输出到 `dist/`。便携版不内置 Playwright Chromium；在线网页截图会优先使用本机 Chrome，其次使用 Microsoft Edge。
 
 ## 许可证
 

@@ -7,7 +7,6 @@ import type {
   CaptureTarget,
   CaptureResult,
   ComplianceIssue,
-  ExtensionManifestInfo,
   ThemeMode,
   ThemeState,
   UrlCaptureOptions
@@ -16,12 +15,6 @@ import type {
 const api = {
   captureUrl: (payload: { url: string; target: CaptureTarget; options?: Partial<UrlCaptureOptions> }): Promise<CaptureResult> =>
     ipcRenderer.invoke('capture:url', payload),
-  captureExtensionOptions: (payload: { extensionPath: string; target: CaptureTarget }): Promise<CaptureResult> =>
-    ipcRenderer.invoke('capture:extensionOptions', payload),
-  captureExtensionPopup: (payload: { extensionPath: string; target: CaptureTarget }): Promise<CaptureResult> =>
-    ipcRenderer.invoke('capture:extensionPopup', payload),
-  inspectExtensionManifest: (payload: { extensionPath: string }): Promise<ExtensionManifestInfo> =>
-    ipcRenderer.invoke('extension:inspectManifest', payload),
   listBrowserTabs: (payload: { endpoint: string }): Promise<BrowserTab[]> =>
     ipcRenderer.invoke('browser:listTabs', payload),
   captureBrowserTab: (payload: { endpoint: string; tabId: string; target: CaptureTarget }): Promise<CaptureResult> =>
@@ -31,7 +24,6 @@ const api = {
     destinationPath: string;
     target: CaptureTarget;
   }): Promise<{ destinationPath: string; compliance: ComplianceIssue[] }> => ipcRenderer.invoke('export:png', payload),
-  pickExtensionDirectory: (): Promise<string | undefined> => ipcRenderer.invoke('dialog:pickExtensionDirectory'),
   pickExportPath: (payload: { defaultName: string }): Promise<string | undefined> =>
     ipcRenderer.invoke('dialog:pickExportPath', payload),
   showItemInFolder: (filePath: string): Promise<void> => ipcRenderer.invoke('shell:showItemInFolder', filePath),

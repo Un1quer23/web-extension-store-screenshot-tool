@@ -1,12 +1,12 @@
 import { createServer } from 'node:http';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { captureBrowserTab, captureExtensionOptions, captureExtensionPopup, captureUrl, listBrowserTabs } from '../src/main/capture';
+import { captureBrowserTab, captureUrl, listBrowserTabs } from '../src/main/capture';
 import { requireBrowserRuntime } from '../src/main/browserRuntime';
 import type { AssetPresetId } from '../src/shared/types';
 
@@ -162,41 +162,4 @@ describe('captureUrl', () => {
       await rm(userDataDir, { recursive: true, force: true });
     }
   }, 60_000);
-});
-
-describe.runIf(process.env.RUN_EXTENSION_CAPTURE === '1')('extension capture', () => {
-  it('captures options and popup pages from an unpacked fixture', async () => {
-    const extensionDir = await mkdtemp(path.join(os.tmpdir(), 'store-shot-extension-'));
-
-    try {
-      await writeFile(
-        path.join(extensionDir, 'manifest.json'),
-        JSON.stringify(
-          {
-            manifest_version: 3,
-            name: 'Fixture Extension',
-            version: '1.0.0',
-            background: { service_worker: 'background.js' },
-            action: { default_popup: 'popup.html' },
-            options_ui: { page: 'options.html' }
-          },
-          null,
-          2
-        )
-      );
-      await writeFile(path.join(extensionDir, 'background.js'), 'chrome.runtime.onInstalled.addListener(() => {});');
-      await writeFile(path.join(extensionDir, 'popup.html'), '<body style="margin:0;background:#fff">Popup</body>');
-      await writeFile(path.join(extensionDir, 'options.html'), '<body style="margin:0;background:#fff">Options</body>');
-
-      const options = await captureExtensionOptions(extensionDir, 'edge-screenshot-640x480');
-      const popup = await captureExtensionPopup(extensionDir, 'edge-screenshot-640x480');
-
-      expect(options.detectedPath).toBe('options.html');
-      expect(popup.detectedPath).toBe('popup.html');
-      await expectPngSize(options.imagePath, 640, 480);
-      await expectPngSize(popup.imagePath, 640, 480);
-    } finally {
-      await rm(extensionDir, { recursive: true, force: true });
-    }
-  }, 120_000);
 });

@@ -9,7 +9,7 @@ import type {
   UrlScrollMode
 } from '../../shared/types';
 
-type SourceId = 'url' | 'extension' | 'browser';
+type SourceId = 'url' | 'browser';
 
 type StorePresetCopy = {
   label: string;
@@ -45,16 +45,6 @@ export type AppCopy = {
   pagePosition: string;
   customScrollY: string;
   capturePage: string;
-  unpackedExtensionDirectory: string;
-  chooseDirectory: string;
-  options: string;
-  popup: string;
-  optionsNotConfigured: string;
-  popupNotConfigured: string;
-  manifestNoPages: string;
-  waitingForValidExtension: string;
-  extensionNoOptions: string;
-  extensionNoPopup: string;
   cdpEndpoint: string;
   refreshTabs: string;
   tab: string;
@@ -63,7 +53,6 @@ export type AppCopy = {
   captureTab: string;
   previewAria: string;
   previewAlt: string;
-  detectedPage: string;
   exportAria: string;
   compliance: string;
   exportPng: string;
@@ -105,16 +94,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     pagePosition: '页面位置',
     customScrollY: '自定义滚动位置 px',
     capturePage: '截取网页',
-    unpackedExtensionDirectory: '未打包扩展目录',
-    chooseDirectory: '选择目录',
-    options: '选项页',
-    popup: '弹窗页',
-    optionsNotConfigured: '选项页：未配置',
-    popupNotConfigured: '弹窗页：未配置',
-    manifestNoPages: 'manifest.json 未配置选项页或弹窗页。',
-    waitingForValidExtension: '等待选择有效的未打包扩展目录。',
-    extensionNoOptions: '这个扩展没有配置选项页。',
-    extensionNoPopup: '这个扩展没有配置弹窗页。',
     cdpEndpoint: 'CDP 远程调试地址',
     refreshTabs: '刷新页面列表',
     tab: '目标页面',
@@ -123,7 +102,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     captureTab: '截取页面',
     previewAria: '截图预览',
     previewAlt: '截图预览',
-    detectedPage: '已识别页面',
     exportAria: '导出',
     compliance: '合规校验',
     exportPng: '导出 PNG',
@@ -148,7 +126,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     pagePositionSummary: (scrollY, maxScrollY) => `当前滚动到 Y=${scrollY}px，可滚动最大值 ${maxScrollY}px。`,
     sourceLabels: {
       url: '在线网页',
-      extension: '本地扩展',
       browser: '本机浏览器'
     },
     sourceGuides: {
@@ -171,13 +148,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
         '输入要截图的网址，包含 https:// 或 http://。',
         '选择页面位置：顶部、中部、底部，或输入自定义滚动像素。',
         '点击“截取网页”，工具会用本机 Chrome 或 Edge 打开页面并截图。'
-      ],
-      extension: [
-        '选择未打包扩展的根目录，也就是包含 manifest.json 的那一层目录。',
-        '选择后工具会读取 manifest，识别 options_ui.page、options_page 和 action/default_popup。',
-        '如果识别成功，会在提示文字里显示可用的选项页或弹窗页路径。',
-        '点击“选项页”会截取扩展的设置页面；点击“弹窗页”会截取工具栏弹窗页面。',
-        '按钮不可用通常表示 manifest 没有配置对应页面，或当前选择的目录不是扩展根目录。'
       ]
     },
     urlScrollModeLabels: {
@@ -204,16 +174,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     pagePosition: 'Page position',
     customScrollY: 'Custom scroll Y px',
     capturePage: 'Capture page',
-    unpackedExtensionDirectory: 'Unpacked extension directory',
-    chooseDirectory: 'Choose directory',
-    options: 'Options',
-    popup: 'Popup',
-    optionsNotConfigured: 'Options: not configured',
-    popupNotConfigured: 'Popup: not configured',
-    manifestNoPages: 'manifest.json does not configure an options page or popup page.',
-    waitingForValidExtension: 'Waiting for a valid unpacked extension directory.',
-    extensionNoOptions: 'This extension does not define an options page.',
-    extensionNoPopup: 'This extension does not define a popup page.',
     cdpEndpoint: 'CDP endpoint',
     refreshTabs: 'Refresh pages',
     tab: 'Target page',
@@ -222,7 +182,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     captureTab: 'Capture page',
     previewAria: 'Screenshot preview',
     previewAlt: 'Screenshot preview',
-    detectedPage: 'Detected page',
     exportAria: 'Export',
     compliance: 'Compliance',
     exportPng: 'Export PNG',
@@ -246,9 +205,8 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     foundTabs: (count) => `Found ${count} pages`,
     pagePositionSummary: (scrollY, maxScrollY) => `Captured at scroll Y=${scrollY}px; maximum scroll is ${maxScrollY}px.`,
     sourceLabels: {
-      url: 'Enter URL',
-      extension: 'Local extension',
-      browser: 'Opened page'
+      url: 'Online page',
+      browser: 'Local browser'
     },
     sourceGuides: {
       browser: [
@@ -270,13 +228,6 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
         'Enter the page URL, including https:// or http://.',
         'Choose the page position: top, middle, bottom, or a custom scroll offset.',
         'Capture the page. The tool opens it with the local Chrome or Edge runtime.'
-      ],
-      extension: [
-        'Choose the unpacked extension root directory, the folder that directly contains manifest.json.',
-        'The tool reads manifest.json and detects options_ui.page, options_page, and action/default_popup.',
-        'When detection succeeds, the note shows which options or popup path is available.',
-        'Use Options to capture the extension settings page, or Popup to capture the toolbar popup page.',
-        'A disabled button usually means that page is not configured, or the selected folder is not the extension root.'
       ]
     },
     urlScrollModeLabels: {
@@ -476,10 +427,6 @@ export function localizedError(language: AppLanguage, message: string): string {
 
   const errors: Record<string, string> = {
     'Please enter a URL to capture.': '请先输入要截图的 URL。',
-    'Unable to detect the extension ID. Make sure the unpacked extension can start in Chromium.':
-      '无法识别扩展 ID。请确认未打包扩展能在 Chromium 中启动。',
-    'manifest.json does not define an options page.': 'manifest.json 中没有配置选项页。',
-    'manifest.json does not define a popup page.': 'manifest.json 中没有配置弹窗页。',
     'Please enter the browser remote debugging endpoint.': '请先输入浏览器远程调试地址。',
     'The selected browser tab was not found. Refresh the tab list and try again.':
       '没有找到所选页面。请刷新页面列表后重试。',

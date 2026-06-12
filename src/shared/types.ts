@@ -271,7 +271,6 @@ export type CaptureResult = {
   target: CaptureTarget;
   compliance: ComplianceIssue[];
   pagePosition?: PagePositionInfo;
-  detectedPath?: string;
   note?: string;
 };
 
@@ -279,9 +278,4 @@ export type BrowserTab = {
   id: string;
   title: string;
   url: string;
-};
-
-export type ExtensionManifestInfo = {
-  optionsPath?: string;
-  popupPath?: string;
 };

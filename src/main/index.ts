@@ -10,16 +10,9 @@ import {
   type UrlCaptureOptions
 } from '../shared/types';
 import { findBrowserRuntime } from './browserRuntime';
-import {
-  captureBrowserTab,
-  captureExtensionOptions,
-  captureExtensionPopup,
-  captureUrl,
-  listBrowserTabs
-} from './capture';
+import { captureBrowserTab, captureUrl, listBrowserTabs } from './capture';
 import { hasBlockingComplianceIssue, validateImageCompliance } from './compliance';
 import { copyPng } from './image';
-import { readExtensionManifest } from './manifest';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ABOUT_GITHUB_URL = 'https://github.com/Un1quer23/web-extension-store-screenshot-tool';
@@ -49,7 +42,6 @@ const MENU_TEXT: Record<
     github: string;
     openSourceNotice: string;
     watermark: string;
-    chooseExtensionDirectory: string;
   }
 > = {
   'zh-CN': {
@@ -68,8 +60,7 @@ const MENU_TEXT: Record<
     author: '作者：Un1quer',
     github: 'GitHub 项目地址',
     openSourceNotice: '本程序为开源软件，遵循 GNU General Public License v3 协议。',
-    watermark: 'Think Different.',
-    chooseExtensionDirectory: '选择未打包扩展目录'
+    watermark: 'Think Different.'
   },
   'en-US': {
     title: 'Web Extension Store Screenshot Tool',
@@ -87,8 +78,7 @@ const MENU_TEXT: Record<
     author: 'Author: Un1quer',
     github: 'GitHub project',
     openSourceNotice: 'This program is open source software licensed under GNU General Public License v3.',
-    watermark: 'Think Different.',
-    chooseExtensionDirectory: 'Choose unpacked extension directory'
+    watermark: 'Think Different.'
   }
 };
 
@@ -417,15 +407,6 @@ function registerHandlers(): void {
     (_event, payload: { url: string; target: CaptureTarget; options?: Partial<UrlCaptureOptions> }) =>
       captureUrl(payload.url, payload.target, payload.options)
   );
-  ipcMain.handle('capture:extensionOptions', (_event, payload: { extensionPath: string; target: CaptureTarget }) =>
-    captureExtensionOptions(payload.extensionPath, payload.target)
-  );
-  ipcMain.handle('capture:extensionPopup', (_event, payload: { extensionPath: string; target: CaptureTarget }) =>
-    captureExtensionPopup(payload.extensionPath, payload.target)
-  );
-  ipcMain.handle('extension:inspectManifest', (_event, payload: { extensionPath: string }) =>
-    readExtensionManifest(payload.extensionPath)
-  );
   ipcMain.handle('browser:listTabs', (_event, payload: { endpoint: string }) => listBrowserTabs(payload.endpoint));
   ipcMain.handle('capture:browserTab', (_event, payload: { endpoint: string; tabId: string; target: CaptureTarget }) =>
     captureBrowserTab(payload.endpoint, payload.tabId, payload.target)
@@ -442,14 +423,6 @@ function registerHandlers(): void {
       return { destinationPath, compliance };
     }
   );
-  ipcMain.handle('dialog:pickExtensionDirectory', async () => {
-    const result = await dialog.showOpenDialog({
-      title: t().chooseExtensionDirectory,
-      properties: ['openDirectory']
-    });
-
-    return result.canceled ? undefined : result.filePaths[0];
-  });
   ipcMain.handle('dialog:pickExportPath', async (_event, payload: { defaultName: string }) => {
     const result = await dialog.showSaveDialog({
       title: t().exportPng,
