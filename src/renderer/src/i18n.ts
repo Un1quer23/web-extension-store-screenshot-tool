@@ -119,7 +119,7 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     refreshTabs: '刷新页面列表',
     tab: '目标页面',
     noTabSelected: '未选择页面',
-    chooseTabFirst: '请先选择一个已打开页面。',
+    chooseTabFirst: '请先选择一个本机浏览器页面。',
     captureTab: '截取页面',
     previewAria: '截图预览',
     previewAlt: '截图预览',
@@ -147,9 +147,9 @@ export const APP_COPY: Record<AppLanguage, AppCopy> = {
     foundTabs: (count) => `找到 ${count} 个页面`,
     pagePositionSummary: (scrollY, maxScrollY) => `当前滚动到 Y=${scrollY}px，可滚动最大值 ${maxScrollY}px。`,
     sourceLabels: {
-      url: '输入网址',
+      url: '在线网页',
       extension: '本地扩展',
-      browser: '已打开页面'
+      browser: '本机浏览器'
     },
     sourceGuides: {
       browser: [
