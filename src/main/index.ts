@@ -22,6 +22,7 @@ import { copyPng } from './image';
 import { readExtensionManifest } from './manifest';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ABOUT_GITHUB_URL = 'https://github.com/Un1quer23/web-extension-store-screenshot-tool';
 let appLanguage: AppLanguage = 'zh-CN';
 let themeMode: ThemeMode = 'system';
 
@@ -43,7 +44,11 @@ const MENU_TEXT: Record<
     enUs: string;
     aboutMenu: string;
     about: string;
-    aboutDetail: string;
+    aboutIntro: string;
+    author: string;
+    github: string;
+    openSourceNotice: string;
+    watermark: string;
     chooseExtensionDirectory: string;
   }
 > = {
@@ -59,8 +64,11 @@ const MENU_TEXT: Record<
     enUs: 'English',
     aboutMenu: '关于',
     about: '关于 Web 扩展商店截图工具',
-    aboutDetail:
-      '这是一个面向 Web 扩展开发者的商店截图与 PNG 导出工具。\n\n作者：Un1quer\nGitHub：https://github.com/Un1quer23/web-extension-store-screenshot-tool',
+    aboutIntro: '这是一个面向 Web 扩展开发者的商店截图与 PNG 导出工具。',
+    author: '作者：Un1quer',
+    github: 'GitHub 项目地址',
+    openSourceNotice: '本程序为开源软件，遵循 GNU General Public License v3 协议。',
+    watermark: 'Think Different.',
     chooseExtensionDirectory: '选择未打包扩展目录'
   },
   'en-US': {
@@ -75,8 +83,11 @@ const MENU_TEXT: Record<
     enUs: 'English',
     aboutMenu: 'About',
     about: 'About Web Extension Store Screenshot Tool',
-    aboutDetail:
-      'A store screenshot and PNG export tool for Web extension developers.\n\nAuthor: Un1quer\nGitHub: https://github.com/Un1quer23/web-extension-store-screenshot-tool',
+    aboutIntro: 'A store screenshot and PNG export tool for Web extension developers.',
+    author: 'Author: Un1quer',
+    github: 'GitHub project',
+    openSourceNotice: 'This program is open source software licensed under GNU General Public License v3.',
+    watermark: 'Think Different.',
     chooseExtensionDirectory: 'Choose unpacked extension directory'
   }
 };
@@ -161,6 +172,164 @@ function appIconPath(): string | undefined {
   return existsSync(candidate) ? candidate : undefined;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function aboutHtml(labels: ReturnType<typeof t>): string {
+  return `<!doctype html>
+<html lang="${appLanguage === 'zh-CN' ? 'zh-CN' : 'en'}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+        background: #f7f7f7;
+        color: #1b1b1b;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          background: #202020;
+          color: #f3f3f3;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: grid;
+        min-height: 100vh;
+        margin: 0;
+        padding: 28px;
+      }
+
+      main {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 18px;
+        min-height: 0;
+      }
+
+      h1,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 20px;
+        line-height: 1.28;
+        font-weight: 650;
+      }
+
+      .version {
+        color: color-mix(in srgb, currentColor 62%, transparent);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .content {
+        display: grid;
+        align-content: start;
+        gap: 12px;
+        font-size: 13px;
+        line-height: 1.55;
+        user-select: text;
+      }
+
+      a {
+        color: #0067c0;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .notice {
+        color: color-mix(in srgb, currentColor 76%, transparent);
+      }
+
+      .watermark {
+        align-self: end;
+        color: color-mix(in srgb, currentColor 58%, transparent);
+        font-size: 12px;
+        font-style: italic;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>${escapeHtml(labels.title)}</h1>
+        <p class="version">v${escapeHtml(app.getVersion())}</p>
+      </header>
+      <section class="content">
+        <p>${escapeHtml(labels.aboutIntro)}</p>
+        <p>${escapeHtml(labels.author)}</p>
+        <p>${escapeHtml(labels.github)}：<a href="${ABOUT_GITHUB_URL}" target="_blank" rel="noreferrer">${ABOUT_GITHUB_URL}</a></p>
+        <p class="notice">${escapeHtml(labels.openSourceNotice)}</p>
+      </section>
+      <div></div>
+      <p class="watermark">${escapeHtml(labels.watermark)}</p>
+    </main>
+  </body>
+</html>`;
+}
+
+function showAboutWindow(): void {
+  const labels = t();
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+  const aboutWindow = new BrowserWindow({
+    width: 560,
+    height: 360,
+    minWidth: 480,
+    minHeight: 320,
+    maxWidth: 720,
+    maxHeight: 520,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    parent: focusedWindow ?? undefined,
+    modal: Boolean(focusedWindow),
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#202020' : '#f7f7f7',
+    icon: appIconPath(),
+    title: labels.about,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  });
+
+  aboutWindow.setMenu(null);
+  aboutWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https?:\/\//i.test(url)) {
+      void shell.openExternal(url);
+    }
+
+    return { action: 'deny' };
+  });
+  aboutWindow.webContents.on('will-navigate', (event, url) => {
+    if (/^https?:\/\//i.test(url)) {
+      event.preventDefault();
+      void shell.openExternal(url);
+    }
+  });
+
+  void aboutWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(aboutHtml(labels))}`);
+}
+
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1320,
@@ -186,22 +355,6 @@ function createWindow(): void {
 
 function setupApplicationMenu(): void {
   const labels = t();
-  const showMessage = (title: string, message: string, detail: string) => {
-    const focusedWindow = BrowserWindow.getFocusedWindow();
-    const options = {
-      type: 'info',
-      title,
-      message,
-      detail,
-      icon: appIconPath()
-    } as const;
-
-    if (focusedWindow) {
-      void dialog.showMessageBox(focusedWindow, options);
-    } else {
-      void dialog.showMessageBox(options);
-    }
-  };
 
   const template: MenuItemConstructorOptions[] = [
     {
@@ -249,7 +402,7 @@ function setupApplicationMenu(): void {
       submenu: [
         {
           label: labels.about,
-          click: () => showMessage(labels.about, `${labels.title} ${app.getVersion()}`, labels.aboutDetail)
+          click: () => showAboutWindow()
         }
       ]
     }
