@@ -17,6 +17,12 @@ import { requireBrowserRuntime } from './browserRuntime';
 
 const OUTPUT_DIR = path.join(os.tmpdir(), 'web-extension-store-screenshot-tool');
 
+function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 function normalizeUrl(url: string): string {
   const trimmed = url.trim();
   if (!trimmed) {
@@ -136,15 +142,100 @@ function flattenPages(contexts: BrowserContext[]): Array<{ id: string; page: Pag
   );
 }
 
+type DebugTarget = {
+  title?: string;
+  type?: string;
+  url?: string;
+};
+
+function debugListUrl(endpoint: string): string | undefined {
+  try {
+    const url = new URL(endpoint.trim());
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return undefined;
+    }
+
+    return new URL('/json/list', url).toString();
+  } catch {
+    return undefined;
+  }
+}
+
+async function browserDebugTargets(endpoint: string): Promise<DebugTarget[]> {
+  const url = debugListUrl(endpoint);
+  if (!url) {
+    return [];
+  }
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const targets = (await response.json()) as DebugTarget[];
+        if (targets.some((target) => target.type === 'page' && target.url && target.title?.trim())) {
+          return targets;
+        }
+      }
+    } catch {
+      // The debug endpoint can be reachable before its target list is fully populated.
+    }
+
+    await sleep(100);
+  }
+
+  return [];
+}
+
+function debugTitlesByUrl(targets: DebugTarget[]): Map<string, string[]> {
+  const titles = new Map<string, string[]>();
+
+  for (const target of targets) {
+    const url = target.url?.trim();
+    const title = target.title?.trim();
+    if (target.type !== 'page' || !url || !title) {
+      continue;
+    }
+
+    titles.set(url, [...(titles.get(url) ?? []), title]);
+  }
+
+  return titles;
+}
+
+function takeDebugTitle(titles: Map<string, string[]>, url: string): string {
+  const candidates = titles.get(url);
+  return candidates?.shift() ?? '';
+}
+
+async function pageDisplayTitle(page: Page, debugTitle = ''): Promise<string> {
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    await page.waitForLoadState('domcontentloaded', { timeout: 100 }).catch(() => undefined);
+
+    const domTitle = (await page.title().catch(() => '')).trim();
+    if (domTitle) {
+      return domTitle;
+    }
+
+    if (debugTitle) {
+      return debugTitle;
+    }
+
+    await sleep(100);
+  }
+
+  return '';
+}
+
 export async function listBrowserTabs(endpoint: string): Promise<BrowserTab[]> {
   const browser = await connect(endpoint);
 
   try {
     const tabs = flattenPages(browser.contexts()).filter(({ page }) => page.url() !== 'about:blank');
+    const debugTitles = debugTitlesByUrl(await browserDebugTargets(endpoint));
     return Promise.all(
       tabs.map(async ({ id, page }) => ({
         id,
-        title: (await page.title().catch(() => 'Untitled tab')) || 'Untitled tab',
+        title: await pageDisplayTitle(page, takeDebugTitle(debugTitles, page.url())),
         url: page.url()
       }))
     );

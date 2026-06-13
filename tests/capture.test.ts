@@ -20,6 +20,7 @@ beforeAll(async () => {
       response.end(`
         <!doctype html>
         <html>
+          <head><title>Long store screenshot fixture</title></head>
           <body style="margin:0;font-family:Segoe UI,sans-serif">
             <section style="height:600px;background:#f7f2e8;display:grid;place-items:center">Top</section>
             <section style="height:600px;background:#d8ead2;display:grid;place-items:center">Middle</section>
@@ -30,9 +31,24 @@ beforeAll(async () => {
       return;
     }
 
+    if (request.url?.startsWith('/no-title')) {
+      response.end(`
+        <!doctype html>
+        <html>
+          <body style="margin:0;background:#f7f2e8;color:#10201a;font-family:Segoe UI,sans-serif">
+            <main style="height:100vh;display:grid;place-items:center">
+              <h1>No title fixture</h1>
+            </main>
+          </body>
+        </html>
+      `);
+      return;
+    }
+
     response.end(`
       <!doctype html>
       <html>
+        <head><title>Store screenshot fixture</title></head>
         <body style="margin:0;background:#f7f2e8;color:#10201a;font-family:Segoe UI,sans-serif">
           <main style="height:100vh;display:grid;place-items:center">
             <h1>Store screenshot fixture</h1>
@@ -150,6 +166,7 @@ describe('captureUrl', () => {
       const tabs = await listBrowserTabs(endpoint);
       const tab = tabs.find((item) => item.url.startsWith(serverUrl));
       expect(tab).toBeDefined();
+      expect(tab?.title).toBe('Store screenshot fixture');
 
       const result = await captureBrowserTab(endpoint, tab!.id, { mode: 'custom', width: 500, height: 333 });
 
@@ -157,6 +174,32 @@ describe('captureUrl', () => {
       expect(result.height).toBe(333);
       expect(result.assetId).toBeUndefined();
       await expectPngSize(result.imagePath, 500, 333);
+    } finally {
+      await stopBrowser(browserProcess);
+      await rm(userDataDir, { recursive: true, force: true });
+    }
+  }, 60_000);
+
+  it('uses the browser target title when a page has no DOM title', async () => {
+    const userDataDir = await mkdtemp(path.join(os.tmpdir(), 'store-shot-cdp-profile-'));
+    const runtime = requireBrowserRuntime();
+    const noTitleUrl = `${serverUrl}/no-title`;
+    const browserProcess = spawn(runtime.executablePath, [
+      '--headless=new',
+      '--remote-debugging-port=0',
+      `--user-data-dir=${userDataDir}`,
+      '--no-first-run',
+      '--no-default-browser-check',
+      noTitleUrl
+    ]);
+
+    try {
+      const endpoint = await waitForCdpEndpoint(userDataDir);
+      const tabs = await listBrowserTabs(endpoint);
+      const tab = tabs.find((item) => item.url.startsWith(noTitleUrl));
+      expect(tab).toBeDefined();
+      expect(tab?.title).not.toBe('Untitled tab');
+      expect(tab?.title).toContain(new URL(serverUrl).host);
     } finally {
       await stopBrowser(browserProcess);
       await rm(userDataDir, { recursive: true, force: true });
