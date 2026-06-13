@@ -2,6 +2,7 @@
   "name": "web-extension-store-screenshot-tool",
   "version": "0.1.0",
   "description": "面向 Web 扩展开发者的桌面截图和 PNG 导出工具。",
+  "author": "Un1quer",
   "license": "GPL-3.0-only",
   "type": "module",
   "main": "out/main/index.js",
