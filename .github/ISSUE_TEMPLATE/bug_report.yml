@@ -1,0 +1,65 @@
+name: Bug report
+description: Report a reproducible problem in Web Extension Store Screenshot Tool.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Please include enough detail to reproduce it.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: App version, release tag, or commit hash.
+      placeholder: "v0.1.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: source-mode
+    attributes:
+      label: Capture source
+      options:
+        - Local browser over CDP
+        - Online URL
+        - PNG export
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps that trigger the problem.
+      placeholder: |
+        1. Open the app
+        2. Select ...
+        3. Click ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead? Include error messages when available.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include Windows version, Chrome/Edge version, and any relevant browser/runtime details.
+      placeholder: |
+        Windows 11 23H2
+        Chrome 126
+        Microsoft Edge 126
+    validations:
+      required: false

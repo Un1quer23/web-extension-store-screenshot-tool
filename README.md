@@ -1,10 +1,12 @@
 # Web Extension Store Screenshot Tool
 
-面向 Web 扩展开发者的桌面截图与 PNG 导出工具，用来快速生成 Chrome Web Store、Microsoft Edge Add-ons、Firefox AMO、Opera Add-ons 等商店页面需要的截图素材。
+面向 Web 扩展开发者的桌面截图与 PNG 导出工具，用来生成 Chrome Web Store、Microsoft Edge Add-ons、Firefox AMO、Opera Add-ons 等商店页面需要的截图素材。
+
+![Web Extension Store Screenshot Tool 主界面](docs/screenshot.png)
 
 ## 下载
 
-Windows 便携版 EXE 会发布在 GitHub Releases：
+Windows 便携版 EXE 发布在 GitHub Releases：
 
 - [查看最新 Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
 
@@ -73,6 +75,10 @@ npm run dist:portable
 
 打包产物会输出到 `dist/`。
 
+## 安全
+
+安全问题请参考 [SECURITY.md](SECURITY.md)。如果问题不适合公开讨论，请先通过 GitHub 私下联系维护者。
+
 ## 许可证
 
-本软件使用 GNU General Public License v3.0 开源。详见 [LICENSE](LICENSE)。
+本软件使用 GNU General Public License v3.0 only 开源。详见 [LICENSE](LICENSE)。
