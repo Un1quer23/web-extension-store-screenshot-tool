@@ -1,7 +1,7 @@
 {
   "name": "web-extension-store-screenshot-tool",
   "version": "0.1.1",
-  "description": "面向 Web 扩展开发者的桌面截图和 PNG 导出工具。",
+  "description": "Desktop screenshot and PNG export tool for Web extension store listing assets.",
   "author": "Un1quer",
   "repository": {
     "type": "git",
