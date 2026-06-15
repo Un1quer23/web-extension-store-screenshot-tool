@@ -1,8 +1,10 @@
 # Web Extension Store Screenshot Tool
 
+**语言:** 简体中文 | [English](README.en-US.md)
+
 面向 Web 扩展开发者的桌面截图与 PNG 导出工具，用来生成 Chrome Web Store、Microsoft Edge Add-ons、Firefox AMO、Opera Add-ons 等商店页面需要的截图素材。
 
-![Web Extension Store Screenshot Tool main window](docs/screenshot.png)
+![Web Extension Store Screenshot Tool 主窗口](docs/screenshot.png)
 
 ## 下载
 

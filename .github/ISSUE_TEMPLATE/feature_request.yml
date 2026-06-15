@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest an improvement for Web Extension Store Screenshot Tool.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement. Please describe the workflow or problem this would help with.
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What are you trying to do, and who would benefit from it?
+      placeholder: I want to...
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-behavior
+    attributes:
+      label: Proposed behavior
+      description: Describe the change you would like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Mention any workaround or different approach you have tried.
+    validations:
+      required: false
+  - type: textarea
+    id: extra-context
+    attributes:
+      label: Extra context
+      description: Add screenshots, links, store requirements, or examples if they help explain the request.
+    validations:
+      required: false

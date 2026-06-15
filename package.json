@@ -3,6 +3,14 @@
   "version": "0.1.1",
   "description": "面向 Web 扩展开发者的桌面截图和 PNG 导出工具。",
   "author": "Un1quer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Un1quer23/web-extension-store-screenshot-tool.git"
+  },
+  "homepage": "https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest",
+  "bugs": {
+    "url": "https://github.com/Un1quer23/web-extension-store-screenshot-tool/issues"
+  },
   "license": "GPL-3.0-only",
   "type": "module",
   "main": "out/main/index.js",
