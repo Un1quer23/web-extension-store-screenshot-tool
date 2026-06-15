@@ -77,9 +77,6 @@ npm run dist:portable
 
 打包产物会输出到 `dist/`。
 
-## 安全
-
-安全问题请参考 [SECURITY.md](SECURITY.md)。如果问题不适合公开讨论，请先通过 GitHub 私下联系维护者。
 
 ## 许可证
 
