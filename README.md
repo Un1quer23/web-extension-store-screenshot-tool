@@ -2,7 +2,9 @@
 
 **Languages:** English | [简体中文](README.zh-CN.md)
 
-A desktop screenshot and PNG export tool for Web extension developers, designed to generate listing assets for Chrome Web Store, Microsoft Edge Add-ons, Firefox AMO, Opera Add-ons, and similar extension stores.
+A desktop screenshot and PNG export tool for Web extension developers,
+designed to generate listing assets for Chrome Web Store, Microsoft Edge Add-ons,
+Firefox AMO, Opera Add-ons, and similar extension stores.
 
 ![Web Extension Store Screenshot Tool main window](docs/screenshot.png)
 
@@ -12,12 +14,15 @@ The Windows portable EXE is published on GitHub Releases:
 
 - [View the latest Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
 
-The portable build does not bundle Playwright Chromium. Captures prefer the local Chrome installation first, then Microsoft Edge.
+The portable build does not bundle Playwright Chromium.
+Captures prefer the local Chrome installation first, then Microsoft Edge.
 
 ## Features
 
-- Local browser: connect to a manually started Chrome or Edge instance over CDP and capture an already-opened page in its prepared state.
-- Online page: enter a URL and let the tool open the page with the local Chrome or Edge runtime before capturing it.
+- Local browser: connect to a manually started Chrome or Edge instance over CDP
+  and capture an already-opened page in its prepared state.
+- Online page: enter a URL and let the tool open the page with the local Chrome
+  or Edge runtime before capturing it.
 - Asset sizes: use built-in extension store asset sizes or enter a custom width and height.
 - Page position: in online page mode, capture the top, middle, bottom, or a custom scroll position.
 - PNG export: preview the capture and export a PNG that matches the selected size.
@@ -32,7 +37,9 @@ The portable build does not bundle Playwright Chromium. Captures prefer the loca
 
 ## Local Browser Mode
 
-Local browser mode is useful when you need to capture a page that is already open and manually prepared. Start Chrome or Edge with a remote debugging port, then return to the app and refresh the page list.
+Local browser mode is useful when you need to capture a page that is already open and manually prepared.
+Start Chrome or Edge with a remote debugging port,
+then return to the app and refresh the page list.
 
 Chrome:
 
@@ -52,13 +59,18 @@ If Chrome is installed in the 32-bit Program Files directory:
 & "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="$env:TEMP\store-shot-chrome-cdp"
 ```
 
-After starting the browser, open the target page in that browser window. In the app, keep the CDP endpoint as `http://127.0.0.1:9222`, click `Refresh pages`, choose the target page, and capture it.
+After starting the browser, open the target page in that browser window.
+In the app, keep the CDP endpoint as `http://127.0.0.1:9222`,
+click `Refresh pages`, choose the target page, and capture it.
 
 ## Custom Sizes
 
-Custom sizes require integer width and height values in the `100-7680` range, with a maximum pixel area of `7680x4320`.
+Custom sizes require integer width and height values in the `100-7680` range,
+with a maximum pixel area of `7680x4320`.
 
-Custom size capture is a free-form export option. It does not guarantee that the output satisfies the submission requirements for Chrome Web Store, Microsoft Edge Add-ons, Firefox AMO, or Opera Add-ons.
+Custom size capture is a free-form export option.
+It does not guarantee that the output satisfies the submission requirements for Chrome Web Store,
+Microsoft Edge Add-ons, Firefox AMO, or Opera Add-ons.
 
 ## Development
 
@@ -77,7 +89,9 @@ npm run dist:portable
 
 Build artifacts are written to `dist/`.
 
-
 ## License
 
-This project is open source software licensed under GNU General Public License v3.0 only. See [LICENSE](LICENSE).
+This project is open source software licensed under GNU General Public License v3.0 only.
+See [LICENSE](LICENSE).
+
+Think Different.
