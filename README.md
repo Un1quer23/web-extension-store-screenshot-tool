@@ -77,9 +77,6 @@ npm run dist:portable
 
 Build artifacts are written to `dist/`.
 
-## Security
-
-See [SECURITY.md](SECURITY.md) for security reporting guidance. If a report is not suitable for public discussion, contact the maintainer privately through GitHub first.
 
 ## License
 
