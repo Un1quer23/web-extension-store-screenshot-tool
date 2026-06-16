@@ -12,8 +12,15 @@
 Windows 便携版 EXE 发布在 GitHub Releases：
 
 - [查看最新 Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
+- `v0.1.1` 便携版 EXE SHA256：
+  `46152016fed20da18c2c024330d01094fd42c3b6c0924ee06735f79538086032`
 
-便携版不内置 Playwright Chromium。
+## 运行要求
+
+- Windows。
+- 本机已安装 Chrome 或 Microsoft Edge。
+- 便携版不内置 Playwright Chromium。
+
 截图时会优先调用本机 Chrome，其次调用 Microsoft Edge。
 
 ## 功能

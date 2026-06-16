@@ -13,8 +13,15 @@ Firefox AMO, Opera Add-ons, and similar extension stores.
 The Windows portable EXE is published on GitHub Releases:
 
 - [View the latest Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
+- `v0.1.1` portable EXE SHA256:
+  `46152016fed20da18c2c024330d01094fd42c3b6c0924ee06735f79538086032`
 
-The portable build does not bundle Playwright Chromium.
+## Requirements
+
+- Windows.
+- Chrome or Microsoft Edge installed locally.
+- The portable build does not bundle Playwright Chromium.
+
 Captures prefer the local Chrome installation first, then Microsoft Edge.
 
 ## Features
