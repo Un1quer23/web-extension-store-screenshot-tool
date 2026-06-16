@@ -3,7 +3,7 @@
 **语言:** [English](README.md) | 简体中文
 
 面向 Web 扩展开发者的桌面截图与 PNG 导出工具，
-用来生成 Chrome Web Store、Microsoft Edge Add-ons、Firefox AMO、Opera Add-ons 等商店页面需要的截图素材。
+用来生成 Chrome Web Store、Microsoft Edge Add-ons、Opera Add-ons 等 Chromium 系扩展商店页面需要的截图素材。
 
 ![Web Extension Store Screenshot Tool 主窗口](docs/screenshot.png)
 
@@ -12,8 +12,8 @@
 Windows 便携版 EXE 发布在 GitHub Releases：
 
 - [查看最新 Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
-- `v0.1.1` 便携版 EXE SHA256：
-  `46152016fed20da18c2c024330d01094fd42c3b6c0924ee06735f79538086032`
+- `v0.2.0` 便携版 EXE SHA256：
+  `afaf52de5b2dfc7206d4abdd49ea73ce91e312315b6bac5985e1d3a5bbf328d2`
 
 ## 运行要求
 
@@ -76,7 +76,7 @@ Edge:
 并限制最大像素面积不超过 `7680x4320`。
 
 自定义尺寸是自由截图能力，
-不代表截图一定符合 Chrome Web Store、Microsoft Edge Add-ons、Firefox AMO 或 Opera Add-ons 的素材提交规范。
+不代表截图一定符合 Chrome Web Store、Microsoft Edge Add-ons 或 Opera Add-ons 的素材提交规范。
 
 ## 开发
 

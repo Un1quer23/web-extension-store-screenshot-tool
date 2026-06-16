@@ -249,10 +249,6 @@ const STORE_COPY: Record<AppLanguage, Record<StorePresetId, StorePresetCopy>> = 
       label: 'Microsoft Edge Add-ons',
       officialSummary: '截图支持 1280x800 或 640x480。支持小磁贴和大磁贴素材。'
     },
-    'firefox-amo': {
-      label: 'Firefox AMO',
-      officialSummary: '推荐最大显示尺寸为 1280x800，其他截图尽量保持 1.6:1 比例。'
-    },
     'opera-addons': {
       label: 'Opera Add-ons',
       officialSummary: '推荐截图尺寸为 612x408，图片应清晰且不超过 800x600。'
@@ -266,10 +262,6 @@ const STORE_COPY: Record<AppLanguage, Record<StorePresetId, StorePresetCopy>> = 
     'edge-addons': {
       label: 'Microsoft Edge Add-ons',
       officialSummary: 'Screenshots: 1280x800 or 640x480. Small and large tile assets are supported.'
-    },
-    'firefox-amo': {
-      label: 'Firefox AMO',
-      officialSummary: 'Recommended maximum display size is 1280x800; keep other screenshots near a 1.6:1 ratio.'
     },
     'opera-addons': {
       label: 'Opera Add-ons',
@@ -312,10 +304,6 @@ const ASSET_COPY: Record<AppLanguage, Record<AssetPresetId, AssetPresetCopy>> = 
       label: '大磁贴 1400x560',
       notes: 'Microsoft Edge Add-ons 大磁贴图片。当前版本只校验画布尺寸。'
     },
-    'firefox-screenshot-1280x800': {
-      label: '截图 1280x800',
-      notes: 'Firefox AMO 推荐 1280x800 作为最大显示尺寸。'
-    },
     'opera-screenshot-612x408': {
       label: '截图 612x408',
       notes: 'Opera Add-ons 推荐 612x408 截图，内容需要清晰可读。'
@@ -357,10 +345,6 @@ const ASSET_COPY: Record<AppLanguage, Record<AssetPresetId, AssetPresetCopy>> = 
     'edge-large-tile-1400x560': {
       label: 'Large Tile 1400x560',
       notes: 'Large tile image for Microsoft Edge Add-ons. This version only enforces canvas size.'
-    },
-    'firefox-screenshot-1280x800': {
-      label: 'Screenshot 1280x800',
-      notes: 'Firefox AMO recommends 1280x800 as the largest display size. Custom 1.6:1 exports can come later.'
     },
     'opera-screenshot-612x408': {
       label: 'Screenshot 612x408',

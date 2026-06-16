@@ -4,7 +4,7 @@
 
 A desktop screenshot and PNG export tool for Web extension developers,
 designed to generate listing assets for Chrome Web Store, Microsoft Edge Add-ons,
-Firefox AMO, Opera Add-ons, and similar extension stores.
+Opera Add-ons, and similar Chromium-based extension stores.
 
 ![Web Extension Store Screenshot Tool main window](docs/screenshot.png)
 
@@ -13,8 +13,8 @@ Firefox AMO, Opera Add-ons, and similar extension stores.
 The Windows portable EXE is published on GitHub Releases:
 
 - [View the latest Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
-- `v0.1.1` portable EXE SHA256:
-  `46152016fed20da18c2c024330d01094fd42c3b6c0924ee06735f79538086032`
+- `v0.2.0` portable EXE SHA256:
+  `afaf52de5b2dfc7206d4abdd49ea73ce91e312315b6bac5985e1d3a5bbf328d2`
 
 ## Requirements
 
@@ -77,7 +77,7 @@ with a maximum pixel area of `7680x4320`.
 
 Custom size capture is a free-form export option.
 It does not guarantee that the output satisfies the submission requirements for Chrome Web Store,
-Microsoft Edge Add-ons, Firefox AMO, or Opera Add-ons.
+Microsoft Edge Add-ons, or Opera Add-ons.
 
 ## Development
 

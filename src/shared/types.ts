@@ -10,11 +10,6 @@ export const STORE_PRESETS = [
     officialSummary: 'Screenshots: 1280x800 or 640x480. Small and large tile assets are supported.'
   },
   {
-    id: 'firefox-amo',
-    label: 'Firefox AMO',
-    officialSummary: 'Recommended maximum display size is 1280x800; keep other screenshots near a 1.6:1 ratio.'
-  },
-  {
     id: 'opera-addons',
     label: 'Opera Add-ons',
     officialSummary: 'Recommended screenshot size is 612x408; keep images clear and no larger than 800x600.'
@@ -125,17 +120,6 @@ export const ASSET_PRESETS = [
     format: 'png',
     requiredLevel: 'optional',
     notes: 'Large tile image for Microsoft Edge Add-ons. This version only enforces canvas size.'
-  },
-  {
-    id: 'firefox-screenshot-1280x800',
-    storeId: 'firefox-amo',
-    kind: 'screenshot',
-    label: 'Screenshot 1280x800',
-    width: 1280,
-    height: 800,
-    format: 'png',
-    requiredLevel: 'recommended',
-    notes: 'Firefox AMO recommends 1280x800 as the largest display size. Custom 1.6:1 exports can come later.'
   },
   {
     id: 'opera-screenshot-612x408',

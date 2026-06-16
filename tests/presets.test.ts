@@ -11,7 +11,6 @@ describe('store asset presets', () => {
     expect(STORE_PRESETS.map((store) => store.id)).toEqual([
       'chrome-web-store',
       'edge-addons',
-      'firefox-amo',
       'opera-addons'
     ]);
   });
@@ -24,7 +23,6 @@ describe('store asset presets', () => {
       'chrome-marquee-1400x560'
     ]);
     expect(getAssetsForStore('edge-addons')).toHaveLength(4);
-    expect(getAssetsForStore('firefox-amo')).toHaveLength(1);
     expect(getAssetsForStore('opera-addons')).toHaveLength(2);
   });
 
