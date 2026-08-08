@@ -13,8 +13,8 @@ Opera Add-ons, and similar Chromium-based extension stores.
 The Windows portable EXE is published on GitHub Releases:
 
 - [View the latest Release](https://github.com/Un1quer23/web-extension-store-screenshot-tool/releases/latest)
-- `v0.2.0` portable EXE SHA256:
-  `afaf52de5b2dfc7206d4abdd49ea73ce91e312315b6bac5985e1d3a5bbf328d2`
+- `v0.2.1` portable EXE SHA256:
+  `a79a551b0ac5ac53a0573366bd893bfe60bf14174747e98800f8854a2cca59b1`
 
 ## Requirements
 
